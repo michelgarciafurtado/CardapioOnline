@@ -7,4 +7,27 @@
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <table>
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Descricao</th>
+                <th>Preco</th>
+                <th>Categoria</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Cardapio.ObterProdutos())
+            {
+                <tr>
+                    <td>@item.Nome</td>
+                    <td>@item.Descricao</td>
+                    <td>@item.Preco.ToString("C")</td>
+                    <td>@item.Categoria</td>
+                </tr>
+            }
+            <td></td>
+        </tbody>
+    </table>
+
 </div>
