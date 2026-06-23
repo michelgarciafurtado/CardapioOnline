@@ -1,22 +1,21 @@
 ﻿using CardapioOnline.Models;
 using MassTransit;
 
-namespace CardapioOnline.Consumer
+namespace CardapioOnline.Consumer;
+
+public class ProdutoCriadoConsumer:IConsumer<ProdutoCriadoEvento>
 {
-    public class ProdutoCriadoConsumer:IConsumer<Models.ProdutoViewModel>
+    public Cardapio cardapio = new Cardapio();
+    public Task Consume(ConsumeContext<ProdutoCriadoEvento> context)
     {
-        public Cardapio cardapio = new Cardapio();
-        public Task Consume(ConsumeContext<Models.ProdutoViewModel> context)
+        var produto = context.Message;
+        cardapio.Produtos.Add(new ProdutoViewModel
         {
-            var produto = context.Message;
-            cardapio.Produtos.Add(new ProdutoViewModel
-            {
-                Nome = produto.Nome,
-                Descricao = produto.Descricao,
-                Preco = produto.Preco,
-                Categoria = produto.Categoria
-            });
-            return Task.CompletedTask;
-        }
+            Nome = produto.nome,
+            Descricao = produto.descricao,
+            Preco = produto.preco,
+            Categoria = produto.categoria
+        });
+        return Task.CompletedTask;
     }
 }

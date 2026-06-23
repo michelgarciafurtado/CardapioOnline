@@ -12,18 +12,18 @@ builder.Services.AddMassTransit(busConfigurator => {
 
     busConfigurator.UsingRabbitMq((busContext, rabbitCfg) =>
     {
-        rabbitCfg.Host(builder.Configuration["RabbitMQ:HostName"], h =>
+        rabbitCfg.Message<ProdutoCriadoEvento>(x => x.SetEntityName("produto_criado_event"));
+        rabbitCfg.Host(builder.Configuration["RabbitMQ:HostName"],"/", h =>
         {
             h.Username(builder.Configuration["RabbitMQ:UserName"]);
             h.Password(builder.Configuration["RabbitMQ:Password"]);
         });
-        var nomeDaFila = builder.Configuration["RabbitMQ:FilaProduto"];
 
-        rabbitCfg.PrefetchCount = 16;
-        rabbitCfg.ReceiveEndpoint(nomeDaFila!, endpoint =>
+        // Configura a fila para este consumer automaticamente
+        rabbitCfg.ReceiveEndpoint("produto_queue_skipped", e =>
         {
-            // Vincula o consumidor a esta fila específica
-            endpoint.ConfigureConsumer<ProdutoCriadoConsumer>(busContext);
+            // Opcional: Evita que o MassTransit crie filas extras de erro ou dead-letter com sufixos diferentes, se preferir
+            e.ConfigureConsumer<ProdutoCriadoConsumer>(busContext);
         });
     });
 });
