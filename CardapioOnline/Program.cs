@@ -12,7 +12,9 @@ builder.Services.AddMassTransit(busConfigurator => {
 
     busConfigurator.UsingRabbitMq((busContext, rabbitCfg) =>
     {
-        rabbitCfg.Host(builder.Configuration["RabbitMQ:HostName"], h =>
+        var rabbitHost = Environment.GetEnvironmentVariable("MassTransit__Host") ?? "127.0.0.1";
+
+        rabbitCfg.Host(rabbitHost,"/", h =>
         {
             h.Username(builder.Configuration["RabbitMQ:UserName"]);
             h.Password(builder.Configuration["RabbitMQ:Password"]);
