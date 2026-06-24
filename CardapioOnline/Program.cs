@@ -1,4 +1,5 @@
 using CardapioOnline.Consumer;
+using CardapioOnline.Models;
 using Compartilhado.Eventos;
 using MassTransit;
 
@@ -29,6 +30,8 @@ builder.Services.AddMassTransit(busConfigurator => {
     });
 });
 
+builder.Services.AddSingleton<Cardapio>();
+builder.Services.AddSignalR();
 
 var app = builder.Build();
 

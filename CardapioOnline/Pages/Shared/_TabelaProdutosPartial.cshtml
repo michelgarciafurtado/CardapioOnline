@@ -1,0 +1,24 @@
+﻿@using CardapioOnline.Models
+@model List<ProdutoViewModel>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Descrição</th>
+            <th>Preço</th>
+            <th>Categoria</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Nome</td>
+                <td>@item.Descricao</td>
+                <td>@item.Preco.ToString("C")</td>
+                <td>@item.Categoria</td>
+            </tr>
+        }
+    </tbody>
+</table>

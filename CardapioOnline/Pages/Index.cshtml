@@ -7,27 +7,29 @@
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-    <table>
-        <thead>
-            <tr>
-                <th>Nome</th>
-                <th>Descricao</th>
-                <th>Preco</th>
-                <th>Categoria</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.Cardapio.ObterProdutos())
-            {
-                <tr>
-                    <td>@item.Nome</td>
-                    <td>@item.Descricao</td>
-                    <td>@item.Preco.ToString("C")</td>
-                    <td>@item.Categoria</td>
-                </tr>
-            }
-            <td></td>
-        </tbody>
-    </table>
+    <div id="container-tabela">
+        <partial name="_TabelaProdutosPartial" model="Model.Cardapio.ObterProdutos()" />
+    </div>
+
+    <script src="https://cloudflare.com"></script>
+    <script src="https://jquery.com"></script>
+
+    <script>
+        const conexao = new signalR.HubConnectionBuilder()
+        .withUrl("/cardapioHub")
+        .withAutomaticReconnect()
+        .build();
+
+        // Quando o MassTransit avisar que a tabela mudou...
+        conexao.on("AtualizarTabela", () => {
+        // Faz uma requisição AJAX para o método OnGetCarregarTabela do C#
+        $.get('?handler=CarregarTabela', function (data) {
+        // Substitui o HTML antigo da div pelo HTML atualizado que o C# retornou
+        $('#container-tabela').html(data);
+        });
+        });
+
+        conexao.start().catch(err => console.error(err.toString()));
+    </script>
 
 </div>

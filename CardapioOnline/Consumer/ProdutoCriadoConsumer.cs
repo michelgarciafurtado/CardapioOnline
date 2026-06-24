@@ -1,16 +1,25 @@
 ﻿using CardapioOnline.Models;
 using Compartilhado.Eventos;
 using MassTransit;
+using Microsoft.AspNetCore.SignalR;
 
 namespace CardapioOnline.Consumer;
 
 public class ProdutoCriadoConsumer:IConsumer<ProdutoCriadoEvento>
 {
-    public Cardapio cardapio = new Cardapio();
+    private readonly Cardapio _cardapio;
+    private readonly IHubContext<CardapioHub> _hubContext;
+
+    public ProdutoCriadoConsumer(Cardapio cardapio, IHubContext<CardapioHub> hubContext)
+    {
+        _cardapio = cardapio;
+        _hubContext = hubContext;
+    }
+
     public Task Consume(ConsumeContext<ProdutoCriadoEvento> context)
     {
         var produto = context.Message;
-        cardapio.Produtos.Add(new ProdutoViewModel
+        _cardapio.Produtos.Add(new ProdutoViewModel
         {
             Nome = produto.nome,
             Descricao = produto.descricao,
@@ -18,7 +27,7 @@ public class ProdutoCriadoConsumer:IConsumer<ProdutoCriadoEvento>
             Categoria = produto.categoria
         });
 
-        Console.WriteLine(cardapio.Produtos[0].Nome);
+        
         return Task.CompletedTask;
     }
 }
