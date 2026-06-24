@@ -1,4 +1,5 @@
 using CardapioOnline.Consumer;
+using Compartilhado.Eventos;
 using MassTransit;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,7 +21,7 @@ builder.Services.AddMassTransit(busConfigurator => {
         });
 
         // Configura a fila para este consumer automaticamente
-        rabbitCfg.ReceiveEndpoint("produto_queue_skipped", e =>
+        rabbitCfg.ReceiveEndpoint("produto_queue", e =>
         {
             // Opcional: Evita que o MassTransit crie filas extras de erro ou dead-letter com sufixos diferentes, se preferir
             e.ConfigureConsumer<ProdutoCriadoConsumer>(busContext);
