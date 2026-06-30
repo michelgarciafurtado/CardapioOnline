@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 
-namespace CardapioOnline.Consumer
-{
-    public class CardapioHub : Hub { }
-    
-}
+namespace CardapioOnline.Consumer;
+
+public class CardapioHub : Hub { }

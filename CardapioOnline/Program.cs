@@ -28,10 +28,14 @@ builder.Services.AddMassTransit(busConfigurator => {
             e.ConfigureConsumer<ProdutoCriadoConsumer>(busContext);
             
         });
+        
     });
+    busConfigurator.AddRequestClient<ObterProdutosRequest>(new Uri("queue:fila_obter_produtos"));
 });
 
 builder.Services.AddSingleton<Cardapio>();
+builder.Services.AddHostedService<CardapioInitializer>();
+builder.Services.AddHostedService<CardapioUpdater>();
 builder.Services.AddSignalR();
 
 var app = builder.Build();
