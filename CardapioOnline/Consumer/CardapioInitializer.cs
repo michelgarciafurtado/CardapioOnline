@@ -1,21 +1,34 @@
 ﻿using CardapioOnline.Models;
+using MassTransit;
 
 namespace CardapioOnline.Consumer
 {
     public class CardapioInitializer:IHostedService
     {
         private readonly Cardapio _cardapio;
-        private readonly IServiceProvider _serviceProvider;
+        private readonly IRequestClient<ObterProdutoRequest> _requestClient;
 
-        public CardapioInitializer(Cardapio cardapio, IServiceProvider serviceProvider)
+        public CardapioInitializer(Cardapio cardapio, IRequestClient<ObterProdutoRequest> requestClient)
         {
             _cardapio = cardapio;
-            _serviceProvider = serviceProvider;
+            _requestClient = requestClient;
         }
 
-        public Task StartAsync(CancellationToken cancellationToken)
+        public async Task StartAsync(CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var response = await _requestClient.GetResponse<ObterProdutoResponse>(new ObterProdutoRequest(), cancellationToken);
+
+            foreach (var produto in response.Message.Produtos)
+            {
+                _cardapio.AdicionarProduto(new ProdutoViewModel
+                {
+                    Id = produto.Id,
+                    Nome = produto.Nome,
+                    Descricao = produto.Descricao,
+                    Preco = produto.Preco,
+                    Categoria = produto.CategoriaNome
+                });
+            }
         }
 
         public Task StopAsync(CancellationToken cancellationToken)

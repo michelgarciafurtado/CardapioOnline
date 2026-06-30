@@ -26,6 +26,7 @@ builder.Services.AddMassTransit(busConfigurator => {
         {
             // Opcional: Evita que o MassTransit crie filas extras de erro ou dead-letter com sufixos diferentes, se preferir
             e.ConfigureConsumer<ProdutoCriadoConsumer>(busContext);
+            
         });
     });
 });
