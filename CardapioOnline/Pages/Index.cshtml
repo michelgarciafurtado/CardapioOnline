@@ -1,12 +1,12 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Cardapio Online";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Cardapio Online</h1>
+    <p>Aplicativo de COnsumer de mensageria via RabbitMQ. Dependente de RabbitMQ instalado e rodando no Kubernetes e ProdutoAPI rodando </a>.</p>
     <div id="container-tabela">
         <partial name="_TabelaProdutosPartial" model="Model.Cardapio.ObterProdutos()" />
     </div>
@@ -24,7 +24,7 @@
         conexao.on("AtualizarTabela", () => {
         // Faz uma requisição AJAX para o método OnGetCarregarTabela do C#
         $.get('?handler=CarregarTabela', function (data) {
-        // Substitui o HTML antigo da div pelo HTML atualizado que o C# retornou
+        // carrega somente a TabelaProutosPartial
         $('#container-tabela').html(data);
         });
         });

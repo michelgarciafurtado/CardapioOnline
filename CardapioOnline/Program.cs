@@ -21,10 +21,10 @@ builder.Services.AddMassTransit(busConfigurator => {
             h.Password(builder.Configuration["RabbitMQ:Password"]);
         });
 
-        // Configura a fila para este consumer automaticamente
+        // Configura a fila para este consumer automaticamente 
         rabbitCfg.ReceiveEndpoint("produto_queue", e =>
         {
-            // Opcional: Evita que o MassTransit crie filas extras de erro ou dead-letter com sufixos diferentes, se preferir
+            
             e.ConfigureConsumer<ProdutoCriadoConsumer>(busContext);
             
         });
